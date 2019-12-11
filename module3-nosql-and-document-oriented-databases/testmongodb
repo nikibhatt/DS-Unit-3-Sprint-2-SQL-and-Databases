@@ -1,0 +1,48 @@
+""""How was working with MongoDB different from working with PostgreSQL? What was easier, and what was harder?"
+PostgreSQL is classic RDBMS and is meant for structured data. MongoDB is for unstructured data.
+PostgreSQL is easier considering RDBMS has only certain set of commands to operate the data.
+MongoDB is slightly trickier since its in key value pair and will take time gettng used to it."""
+
+
+#!pip install pymongo
+#!curl ipecho.net/plain
+
+import pymongo
+
+#username=admin
+#password=3tgAETs3UAlr6Dar
+
+client = pymongo.MongoClient("mongodb://admin:3tgAETs3UAlr6Dar@cluster0-shard-00-00-vl1rp.mongodb.net:27017,cluster0-shard-00-01-vl1rp.mongodb.net:27017,cluster0-shard-00-02-vl1rp.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+db = client.test
+
+step_doc = {
+  'favourite animal':'alpaca',
+  'favourite color':'blue'
+}
+
+zoli_doc = {
+  'favourite animal': ['Black Panther', 'Unicorn']
+}
+
+dorothy_doc = {
+  'favourite animal': 'dog'
+}
+
+db.test.insert_many([step_doc, zoli_doc, dorothy_doc])
+
+print(list(db.test.find()))
+print(list(db.test.find({'favourite animal': 'dog'})))
+
+db.test.update_many({'favourite animal': 'dog'}, {"$set":{'favourite animal':'DOG'}})
+
+rpg_character = (1, "King Bob", 10, 3)
+
+db.test.insert_one({'rpg_character': rpg_character})
+
+db.test.insert_one({
+  'sql_id': rpg_character[0],
+  'name': rpg_character[1],
+  'level': rpg_character[2],
+  'stuff': rpg_character[3]
+})
+print(list(db.test.find()))
