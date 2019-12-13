@@ -7,6 +7,7 @@ conn = sqlite3.connect('northwind_small.sqlite3')
 curs = conn.cursor()
 query = 'select ProductName, CompanyName as Supplier from Product, Supplier where Product.SupplierId = Supplier.Id Order by UnitPrice desc limit 10'
 
+print(curs.execute(query).fetchall.__doc__)
 print('10 most expensive items and their suppliers', curs.execute(query).fetchall())
 
 query = 'select Category.CategoryName, count(*) from Product,Category where Product.CategoryId = Category.Id group by Product.CategoryId order by count(*) DESC limit 1'
